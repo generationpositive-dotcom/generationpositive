@@ -1,0 +1,98 @@
+/* ============================================================
+   Génération Positive — Styles du panneau admin
+   S'appuie sur les variables et classes définies dans style.css
+   ============================================================ */
+
+.admin-body{background:var(--paper);min-height:100vh;}
+
+/* ---------- Écran de connexion ---------- */
+.login-screen{
+  min-height:100vh;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(160deg,var(--teal-deep),var(--teal));padding:24px;
+}
+.login-card{
+  background:#fff;border-radius:var(--radius);padding:36px 32px;width:100%;max-width:400px;
+  box-shadow:0 20px 60px rgba(0,0,0,0.25);
+}
+.login-card h1{font-family:'Space Grotesk';font-size:1.3rem;color:var(--ink);margin-bottom:6px;text-align:center;}
+.login-sub{color:var(--ink-soft);font-size:0.88rem;text-align:center;margin-bottom:24px;}
+.login-note{margin-top:18px;font-size:0.76rem;color:var(--ink-soft);text-align:center;line-height:1.5;}
+.login-back{display:block;margin-top:14px;text-align:center;font-size:0.82rem;color:var(--teal);text-decoration:none;}
+.login-back:hover{text-decoration:underline;}
+
+/* ---------- Champs de formulaire ---------- */
+.admin-field{margin-bottom:16px;}
+.admin-field label{display:block;font-size:0.78rem;font-weight:600;color:var(--ink);margin-bottom:6px;}
+.admin-field input,.admin-field select,.admin-field textarea{
+  width:100%;padding:10px 12px;border:1px solid var(--line);border-radius:10px;
+  font-family:inherit;font-size:0.9rem;color:var(--ink);background:#fff;
+}
+.admin-field input:focus,.admin-field select:focus,.admin-field textarea:focus{
+  outline:none;border-color:var(--teal-bright);
+}
+.admin-field-inline{display:flex;align-items:center;gap:8px;margin-bottom:16px;font-size:0.85rem;color:var(--ink);}
+.admin-field-inline input{width:auto;}
+.form-status{margin-top:10px;font-size:0.82rem;min-height:1.2em;}
+.form-status.error{color:#C0392B;}
+.form-status.success{color:#1E8449;}
+
+/* ---------- Layout dashboard ---------- */
+.dashboard{display:flex;min-height:100vh;}
+.admin-sidebar{
+  width:250px;flex-shrink:0;background:var(--teal-deep);color:#fff;
+  display:flex;flex-direction:column;padding:22px 16px;
+}
+.admin-brand{display:flex;align-items:center;gap:10px;font-family:'IBM Plex Mono';font-size:0.72rem;
+  letter-spacing:0.06em;color:#fff;margin-bottom:28px;padding:0 4px;}
+.admin-nav{display:flex;flex-direction:column;gap:4px;flex:1;}
+.admin-nav-link{
+  text-align:left;background:none;border:none;color:rgba(255,255,255,0.75);
+  padding:11px 12px;border-radius:10px;font-size:0.86rem;font-family:inherit;transition:background .15s,color .15s;
+}
+.admin-nav-link:hover{background:rgba(255,255,255,0.08);color:#fff;}
+.admin-nav-link.active{background:var(--orange);color:#fff;font-weight:600;}
+.admin-nav-link[hidden]{display:none;}
+.admin-user{border-top:1px solid rgba(255,255,255,0.15);padding-top:16px;margin-top:12px;}
+.admin-user-email{font-size:0.82rem;color:#fff;word-break:break-all;}
+.admin-user-role{font-size:0.72rem;color:var(--gold);font-family:'IBM Plex Mono';text-transform:uppercase;letter-spacing:0.06em;margin-top:2px;}
+
+.admin-main{flex:1;padding:36px 42px;max-width:980px;}
+.admin-main h2{font-family:'Space Grotesk';font-size:1.5rem;color:var(--ink);margin-bottom:4px;}
+.admin-sub{color:var(--ink-soft);font-size:0.9rem;margin-bottom:24px;}
+.admin-panel{display:none;}
+.admin-panel.active{display:block;}
+
+/* ---------- Cartes du tableau de bord ---------- */
+.admin-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;}
+.admin-cards .card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:18px;}
+.admin-cards .card .num{font-family:'IBM Plex Mono';font-size:1.6rem;color:var(--teal-deep);font-weight:600;}
+.admin-cards .card .label{font-size:0.8rem;color:var(--ink-soft);margin-top:4px;}
+
+/* ---------- Formulaires admin ---------- */
+.admin-form{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:22px;margin-bottom:24px;max-width:480px;}
+
+/* ---------- Tableaux / listes ---------- */
+.admin-table-wrap{background:#fff;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;}
+.admin-table-wrap table{width:100%;border-collapse:collapse;font-size:0.86rem;}
+.admin-table-wrap th{background:var(--paper);text-align:left;padding:10px 14px;font-family:'IBM Plex Mono';
+  font-size:0.68rem;letter-spacing:0.06em;text-transform:uppercase;color:var(--ink-soft);}
+.admin-table-wrap td{padding:10px 14px;border-top:1px solid var(--line);color:var(--ink);vertical-align:middle;}
+.admin-table-wrap .row-actions{display:flex;gap:6px;}
+.admin-table-wrap .row-actions button{
+  border:1px solid var(--line);background:#fff;border-radius:8px;padding:5px 10px;font-size:0.76rem;color:var(--ink);
+}
+.admin-table-wrap .row-actions button:hover{background:var(--paper);}
+.admin-table-wrap .row-actions button.danger{color:#C0392B;border-color:rgba(192,57,43,0.3);}
+.admin-empty{padding:24px;text-align:center;color:var(--ink-soft);font-size:0.86rem;}
+
+.status-pill{display:inline-block;padding:3px 10px;border-radius:999px;font-size:0.72rem;font-weight:600;}
+.status-pill.pending{background:rgba(243,167,48,0.15);color:#8A5A00;}
+.status-pill.approved{background:rgba(30,132,73,0.12);color:#1E8449;}
+.status-pill.rejected{background:rgba(192,57,43,0.12);color:#C0392B;}
+
+@media (max-width: 860px){
+  .dashboard{flex-direction:column;}
+  .admin-sidebar{width:100%;flex-direction:row;flex-wrap:wrap;align-items:center;}
+  .admin-nav{flex-direction:row;flex-wrap:wrap;}
+  .admin-main{padding:22px 18px;}
+}
