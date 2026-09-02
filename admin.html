@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Espace admin — Génération Positive</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" type="image/x-icon" href="images/favicon/favicon.ico">
+<link rel="icon" type="image/png" sizes="32x32" href="images/favicon/favicon-32x32.png">
+<link rel="apple-touch-icon" sizes="180x180" href="images/favicon/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin-body">
+
+<!-- ---------- LOGIN SCREEN ---------- -->
+<div id="loginScreen" class="login-screen">
+  <div class="login-card">
+    <div class="brand" style="margin-bottom:22px;justify-content:center;">
+      <span class="logo-chip"><img src="images/logo.jpg" alt="Logo Génération Positive" width="500" height="153" style="height:28px;width:auto;"></span>
+    </div>
+    <h1>Espace administrateur</h1>
+    <p class="login-sub">Connexion réservée aux membres du bureau habilités.</p>
+    <form id="loginForm" novalidate>
+      <div class="admin-field">
+        <label for="loginEmail">Email</label>
+        <input id="loginEmail" type="email" required autocomplete="username">
+      </div>
+      <div class="admin-field">
+        <label for="loginPassword">Mot de passe</label>
+        <input id="loginPassword" type="password" required autocomplete="current-password">
+      </div>
+      <button class="btn btn-primary" type="submit" id="loginSubmit" style="width:100%;justify-content:center;">
+        <span class="spinner"></span><span class="btn-label">Se connecter</span>
+      </button>
+      <div class="form-status" id="loginStatus" role="status" aria-live="polite"></div>
+    </form>
+    <p class="login-note">Pas encore de compte ? Les accès sont créés manuellement par un administrateur global — contactez le bureau exécutif.</p>
+    <a href="index.html" class="login-back">← Retour au site</a>
+  </div>
+</div>
+
+<!-- ---------- DASHBOARD SHELL (hidden until authenticated) ---------- -->
+<div id="dashboard" class="dashboard" hidden>
+  <aside class="admin-sidebar">
+    <div class="admin-brand">
+      <span class="logo-chip"><img src="images/logo.jpg" alt="" width="500" height="153" style="height:22px;width:auto;"></span>
+      <span>GÉNÉRATION POSITIVE</span>
+    </div>
+    <nav class="admin-nav" id="adminNav">
+      <button class="admin-nav-link active" data-panel="panel-overview">Tableau de bord</button>
+      <button class="admin-nav-link" data-panel="panel-applications" data-roles="super_admin">Adhésions</button>
+      <button class="admin-nav-link" data-panel="panel-accounts" data-roles="super_admin">Comptes &amp; connexions</button>
+      <button class="admin-nav-link" data-panel="panel-announcements" data-roles="super_admin,content_editor">Annonces</button>
+      <button class="admin-nav-link" data-panel="panel-media" data-roles="super_admin,content_editor">Médias</button>
+      <button class="admin-nav-link" data-panel="panel-team" data-roles="super_admin,content_editor">Équipe / Gouvernance</button>
+      <button class="admin-nav-link" data-panel="panel-documents" data-roles="super_admin,resource_manager">Documents</button>
+    </nav>
+    <div class="admin-user">
+      <div class="admin-user-email" id="currentUserEmail"></div>
+      <div class="admin-user-role" id="currentUserRole"></div>
+      <button class="btn btn-ghost" id="logoutBtn" style="margin-top:10px;width:100%;justify-content:center;color:var(--ink);border-color:var(--line);background:#fff;">Se déconnecter</button>
+    </div>
+  </aside>
+
+  <main class="admin-main">
+
+    <section class="admin-panel active" id="panel-overview">
+      <h2>Tableau de bord</h2>
+      <p class="admin-sub">Vue d'ensemble de l'activité du site.</p>
+      <div class="admin-cards" id="overviewCards"></div>
+    </section>
+
+    <section class="admin-panel" id="panel-applications">
+      <h2>Demandes d'adhésion</h2>
+      <p class="admin-sub">Examiner, approuver ou rejeter les nouvelles demandes.</p>
+      <div id="applicationsList" class="admin-table-wrap"></div>
+    </section>
+
+    <section class="admin-panel" id="panel-accounts">
+      <h2>Comptes admin &amp; connexions</h2>
+      <p class="admin-sub">Liste des accès et dernière connexion de chaque compte. La création de nouveaux comptes se fait depuis le Dashboard Supabase (voir SETUP-SUPABASE.md).</p>
+      <div id="accountsList" class="admin-table-wrap"></div>
+    </section>
+
+    <section class="admin-panel" id="panel-announcements">
+      <h2>Annonces</h2>
+      <p class="admin-sub">Publier une actualité visible sur le site public.</p>
+      <form id="announcementForm" class="admin-form">
+        <div class="admin-field"><label for="annTitle">Titre</label><input id="annTitle" required></div>
+        <div class="admin-field"><label for="annBody">Contenu</label><textarea id="annBody" rows="4" required></textarea></div>
+        <div class="admin-field"><label for="annImage">Image (optionnel)</label><input id="annImage" type="file" accept="image/*"></div>
+        <div class="admin-field-inline"><input id="annPublished" type="checkbox" checked><label for="annPublished">Publier immédiatement</label></div>
+        <button class="btn btn-primary" type="submit"><span class="spinner"></span><span class="btn-label">Ajouter l'annonce</span></button>
+        <div class="form-status" id="announcementStatus"></div>
+      </form>
+      <div id="announcementsList" class="admin-table-wrap"></div>
+    </section>
+
+    <section class="admin-panel" id="panel-media">
+      <h2>Médias (images &amp; vidéos)</h2>
+      <p class="admin-sub">Ajouter une photo ou une vidéo à la galerie du site.</p>
+      <form id="mediaForm" class="admin-form">
+        <div class="admin-field">
+          <label for="mediaType">Type</label>
+          <select id="mediaType"><option value="image">Image</option><option value="video">Vidéo (lien externe, ex: YouTube)</option></select>
+        </div>
+        <div class="admin-field" id="mediaFileField"><label for="mediaFile">Fichier image</label><input id="mediaFile" type="file" accept="image/*"></div>
+        <div class="admin-field" id="mediaUrlField" style="display:none;"><label for="mediaUrl">URL de la vidéo</label><input id="mediaUrl" type="url" placeholder="https://..."></div>
+        <div class="admin-field"><label for="mediaCaption">Légende</label><input id="mediaCaption"></div>
+        <button class="btn btn-primary" type="submit"><span class="spinner"></span><span class="btn-label">Ajouter le média</span></button>
+        <div class="form-status" id="mediaStatus"></div>
+      </form>
+      <div id="mediaList" class="admin-table-wrap"></div>
+    </section>
+
+    <section class="admin-panel" id="panel-team">
+      <h2>Équipe / Gouvernance</h2>
+      <p class="admin-sub">Ajouter les noms, rôles et photos des responsables affichés en section Gouvernance.</p>
+      <form id="teamForm" class="admin-form">
+        <div class="admin-field"><label for="teamName">Nom complet</label><input id="teamName" required></div>
+        <div class="admin-field"><label for="teamRole">Fonction</label><input id="teamRole" required placeholder="Ex: Présidente, Trésorier..."></div>
+        <div class="admin-field"><label for="teamOrgUnit">Organe</label><input id="teamOrgUnit" placeholder="Ex: Bureau Exécutif"></div>
+        <div class="admin-field"><label for="teamPhoto">Photo (optionnel)</label><input id="teamPhoto" type="file" accept="image/*"></div>
+        <div class="admin-field"><label for="teamBio">Bio courte (optionnel)</label><textarea id="teamBio" rows="3"></textarea></div>
+        <button class="btn btn-primary" type="submit"><span class="spinner"></span><span class="btn-label">Ajouter au trombinoscope</span></button>
+        <div class="form-status" id="teamStatus"></div>
+      </form>
+      <div id="teamList" class="admin-table-wrap"></div>
+    </section>
+
+    <section class="admin-panel" id="panel-documents">
+      <h2>Documents &amp; ressources</h2>
+      <p class="admin-sub">Publier un document institutionnel (statuts, rapport, etc.) téléchargeable sur le site.</p>
+      <form id="documentForm" class="admin-form">
+        <div class="admin-field"><label for="docTitle">Titre du document</label><input id="docTitle" required></div>
+        <div class="admin-field"><label for="docCategory">Catégorie</label><input id="docCategory" placeholder="Ex: Statuts, Rapport annuel..."></div>
+        <div class="admin-field"><label for="docFile">Fichier (PDF, etc.)</label><input id="docFile" type="file" required></div>
+        <button class="btn btn-primary" type="submit"><span class="spinner"></span><span class="btn-label">Publier le document</span></button>
+        <div class="form-status" id="documentStatus"></div>
+      </form>
+      <div id="documentsList" class="admin-table-wrap"></div>
+    </section>
+
+  </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script src="js/supabase-config.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>
