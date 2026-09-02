@@ -1,15 +1,10 @@
 /**
- * Configuration Supabase — à compléter après création du projet.
- * Voir SETUP-SUPABASE.md pour les instructions complètes.
- *
- * La clé "anon" (publique) est SANS DANGER à exposer côté client :
- * c'est tout le principe de Supabase. La vraie sécurité est assurée
- * par les policies RLS définies dans supabase-schema.sql. Ne jamais
- * utiliser la clé "service_role" ici ou dans n'importe quel fichier
- * chargé par le navigateur.
+ * Configuration Supabase — Génération Positive
+ * Clé "anon" (publique) — sans danger à exposer côté client.
+ * La sécurité réelle est assurée par les policies RLS (voir schéma appliqué).
  */
-const SUPABASE_URL = 'https://yyqonuxescpzahhscviw.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl5cW9udXhlc2NwemFoaHNjdml3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgyOTAyOTQsImV4cCI6MjEwMzg2NjI5NH0.5FcxBaYh1U7BvEymnNznCHtvtQZjGaowRMK91co0ZUc';
+const SUPABASE_URL = 'https://lfzmzobmibrsucfiydas.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imxmem16b2JtaWJyc3VjZml5ZGFzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODgyOTMwMjQsImV4cCI6MjEwMzg2OTAyNH0.2Xu1fksBhSTP_NxGdo2i-q5lh_FNRB8ybbtJEc5E1NM';
 
 const supabaseClient = (SUPABASE_URL.startsWith('http'))
   ? window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
