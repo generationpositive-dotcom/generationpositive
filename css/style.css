@@ -459,3 +459,11 @@ nav.links a.active::after{
     box-shadow:0 12px 24px rgba(0,0,0,0.2);
   }
 }
+/* ============================================================
+   À AJOUTER À LA FIN DE css/style.css
+   ============================================================ */
+.events-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px;margin-top:24px;}
+.event-card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:20px;}
+.event-card .event-date{font-family:'IBM Plex Mono';font-size:0.78rem;color:var(--orange);letter-spacing:0.04em;margin-bottom:6px;}
+.event-card h3{font-family:'Space Grotesk';font-size:1.1rem;color:var(--ink);margin-bottom:8px;}
+.event-card .event-location{font-size:0.85rem;color:var(--ink-soft);margin-bottom:8px;}
