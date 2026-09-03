@@ -279,3 +279,72 @@ if(membershipForm){
     membershipSubmit.classList.remove('loading');
   });
 }
+/* ============================================================
+   À AJOUTER À LA FIN DE js/script.js
+   Affiche les événements à venir + génère un fichier .ics
+   pour le bouton "Ajouter à mon calendrier"
+   ============================================================ */
+
+async function loadPublicEvents() {
+  const wrap = document.getElementById('eventsPublicList');
+  if (!wrap || !supabaseClient) return;
+
+  const { data, error } = await supabaseClient
+    .from('events')
+    .select('*')
+    .gte('event_date', new Date().toISOString())
+    .order('event_date', { ascending: true })
+    .limit(6);
+
+  if (error || !data || data.length === 0) {
+    wrap.innerHTML = '<p>Aucun événement à venir pour le moment.</p>';
+    return;
+  }
+
+  wrap.innerHTML = data.map((ev, i) => `
+    <div class="event-card">
+      <div class="event-date">${new Date(ev.event_date).toLocaleDateString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric' })}</div>
+      <h3>${escapeHtmlPublic(ev.title)}</h3>
+      ${ev.location ? `<p class="event-location">📍 ${escapeHtmlPublic(ev.location)}</p>` : ''}
+      ${ev.description ? `<p>${escapeHtmlPublic(ev.description)}</p>` : ''}
+      <button class="btn btn-ghost" data-ics="${i}">+ Ajouter à mon calendrier</button>
+    </div>
+  `).join('');
+
+  wrap.querySelectorAll('button[data-ics]').forEach((btn) => {
+    btn.addEventListener('click', () => downloadIcs(data[Number(btn.dataset.ics)]));
+  });
+}
+
+function escapeHtmlPublic(str) {
+  return (str || '').toString().replace(/[&<>"']/g, (c) => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+  }[c]));
+}
+
+function toIcsDate(d) {
+  return new Date(d).toISOString().replace(/[-:]/g, '').split('.')[0] + 'Z';
+}
+
+function downloadIcs(ev) {
+  const start = toIcsDate(ev.event_date);
+  const end = toIcsDate(ev.end_date || new Date(new Date(ev.event_date).getTime() + 2 * 60 * 60 * 1000));
+  const ics = [
+    'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Génération Positive//FR', 'BEGIN:VEVENT',
+    `UID:${Date.now()}@generationpositive`,
+    `DTSTAMP:${toIcsDate(new Date())}`,
+    `DTSTART:${start}`, `DTEND:${end}`,
+    `SUMMARY:${(ev.title || '').replace(/\n/g, ' ')}`,
+    ev.location ? `LOCATION:${ev.location.replace(/\n/g, ' ')}` : '',
+    ev.description ? `DESCRIPTION:${ev.description.replace(/\n/g, ' ')}` : '',
+    'END:VEVENT', 'END:VCALENDAR'
+  ].filter(Boolean).join('\r\n');
+
+  const blob = new Blob([ics], { type: 'text/calendar' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = `${(ev.title || 'evenement').replace(/[^a-z0-9]/gi, '-')}.ics`;
+  link.click();
+}
+
+document.addEventListener('DOMContentLoaded', loadPublicEvents);
