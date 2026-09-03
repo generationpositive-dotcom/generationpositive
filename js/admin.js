@@ -186,12 +186,13 @@ async function loadApplications() {
   }
 
   wrap.innerHTML = `<table><thead><tr>
-    <th>Nom</th><th>Contact</th><th>Message</th><th>Statut</th><th>Date</th><th></th>
+    <th>Nom</th><th>Contact</th><th>Ville / Profession</th><th>Catégorie</th><th>Statut</th><th>Date</th><th></th>
   </tr></thead><tbody>${data.map(a => `
     <tr data-id="${a.id}">
-      <td>${escapeHtml(a.full_name)}</td>
-      <td>${escapeHtml(a.email)}${a.phone ? '<br>' + escapeHtml(a.phone) : ''}</td>
-      <td style="max-width:220px;">${escapeHtml((a.message || '').slice(0, 80))}</td>
+      <td>${escapeHtml(a.prenom)} ${escapeHtml(a.nom)}</td>
+      <td>${escapeHtml(a.email)}<br>${escapeHtml(a.telephone)}</td>
+      <td>${escapeHtml(a.ville || '—')}${a.profession ? '<br>' + escapeHtml(a.profession) : ''}</td>
+      <td>${escapeHtml(a.categorie || '—')}</td>
       <td><span class="status-pill ${a.status}">${a.status}</span></td>
       <td>${fmtDate(a.created_at)}</td>
       <td class="row-actions">
@@ -199,6 +200,10 @@ async function loadApplications() {
         ${a.status !== 'rejected' ? `<button data-action="reject" class="danger">Rejeter</button>` : ''}
       </td>
     </tr>`).join('')}</tbody></table>`;
+
+  wrap.querySelectorAll('tr[data-id]').forEach((row) => {
+    row.title = data.find(a => a.id === row.dataset.id)?.motivation || '';
+  });
 
   wrap.querySelectorAll('button[data-action]').forEach((btn) => {
     btn.addEventListener('click', async () => {
