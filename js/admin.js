@@ -53,6 +53,7 @@ async function init() {
   document.getElementById('mediaForm').addEventListener('submit', handleMediaSubmit);
   document.getElementById('teamForm').addEventListener('submit', handleTeamSubmit);
   document.getElementById('documentForm').addEventListener('submit', handleDocumentSubmit);
+  document.getElementById('eventForm').addEventListener('submit', handleEventSubmit);
 
   document.getElementById('mediaType').addEventListener('change', (e) => {
     const isVideo = e.target.value === 'video';
@@ -141,7 +142,8 @@ function switchPanel(panelId) {
     'panel-announcements': loadAnnouncements,
     'panel-media': loadMedia,
     'panel-team': loadTeam,
-    'panel-documents': loadDocuments
+    'panel-documents': loadDocuments,
+    'panel-events': loadEvents
   };
   if (loaders[panelId]) loaders[panelId]();
 }
@@ -511,4 +513,70 @@ async function uploadToBucket(bucket, file, folder) {
   if (error) throw error;
   const { data } = supabaseClient.storage.from(bucket).getPublicUrl(path);
   return data.publicUrl;
+}
+
+// ---------- Événements ----------
+async function handleEventSubmit(e) {
+  e.preventDefault();
+  const btn = e.target.querySelector('button[type="submit"]');
+  const status = document.getElementById('eventStatus');
+  setLoading(btn, true);
+  setStatus(status, '', '');
+
+  try {
+    const title = document.getElementById('evtTitle').value.trim();
+    const description = document.getElementById('evtDescription').value.trim();
+    const location = document.getElementById('evtLocation').value.trim();
+    const event_date = document.getElementById('evtDate').value;
+    const end_date = document.getElementById('evtEndDate').value || null;
+    if (!title || !event_date) throw new Error('Titre et date sont obligatoires.');
+
+    const { error } = await supabaseClient.from('events').insert({
+      title, description, location,
+      event_date: new Date(event_date).toISOString(),
+      end_date: end_date ? new Date(end_date).toISOString() : null,
+      created_by: currentProfile.id
+    });
+    if (error) throw error;
+
+    setStatus(status, 'Événement publié — un email de confirmation part vers generationpositive23@gmail.com.', 'success');
+    e.target.reset();
+    loadEvents();
+  } catch (err) {
+    setStatus(status, "Erreur : " + err.message, 'error');
+  } finally {
+    setLoading(btn, false);
+  }
+}
+
+async function loadEvents() {
+  const wrap = document.getElementById('eventsList');
+  wrap.innerHTML = '<div class="admin-empty">Chargement…</div>';
+
+  const { data, error } = await supabaseClient
+    .from('events').select('*').order('event_date', { ascending: true });
+
+  if (error || !data || data.length === 0) {
+    wrap.innerHTML = '<div class="admin-empty">Aucun événement pour le moment.</div>';
+    return;
+  }
+
+  wrap.innerHTML = `<table><thead><tr>
+    <th>Titre</th><th>Date</th><th>Lieu</th><th></th>
+  </tr></thead><tbody>${data.map(ev => `
+    <tr data-id="${ev.id}">
+      <td>${escapeHtml(ev.title)}</td>
+      <td>${new Date(ev.event_date).toLocaleString('fr-FR', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</td>
+      <td>${escapeHtml(ev.location || '—')}</td>
+      <td class="row-actions"><button data-action="delete" class="danger">Supprimer</button></td>
+    </tr>`).join('')}</tbody></table>`;
+
+  wrap.querySelectorAll('button[data-action="delete"]').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const id = btn.closest('tr').dataset.id;
+      if (!confirm('Supprimer cet événement ?')) return;
+      await supabaseClient.from('events').delete().eq('id', id);
+      loadEvents();
+    });
+  });
 }
