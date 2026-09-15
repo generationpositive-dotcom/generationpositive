@@ -12,9 +12,9 @@
   --radius:14px;
 }
 *{box-sizing:border-box;}
-html{scroll-behavior:smooth;}
+html{scroll-behavior:smooth;overflow-x:hidden;}
 body{
-  margin:0;
+  margin:0;overflow-x:hidden;max-width:100vw;
   background:var(--paper);
   color:var(--ink);
   font-family:'Inter',sans-serif;
@@ -57,7 +57,7 @@ img{max-width:100%;display:block;}
 }
 .slide.active{opacity:1;visibility:visible;z-index:2;}
 .slide img{
-  width:100%;height:100%;object-fit:cover;display:block;
+  width:100%;height:100%;object-fit:cover;object-position:center 22%;display:block;
   animation:kenburns 9s ease-in-out forwards;
 }
 @keyframes kenburns{
@@ -177,18 +177,26 @@ nav.links a:hover{color:#fff;}
 
 /* ---------- HERO ---------- */
 .hero{
-  position:relative;background:linear-gradient(160deg,var(--teal-deep) 0%, #0E4C5A 55%, var(--teal) 100%);
-  color:#fff;padding:100px 24px 90px;overflow:hidden;
+  position:relative;
+  background:
+    linear-gradient(100deg, rgba(6,32,38,0.94) 0%, rgba(6,32,38,0.86) 38%, rgba(6,32,38,0.55) 65%, rgba(6,32,38,0.25) 100%),
+    url('../images/hero-bg.jpg') center 28%/cover no-repeat;
+  color:#fff;padding:110px 24px 100px;overflow:hidden;
 }
-.hero-inner{position:relative;z-index:2;max-width:780px;margin:0 auto;text-align:center;}
+.hero-inner{position:relative;z-index:2;max-width:1180px;margin:0 auto;}
+.hero-content{max-width:560px;text-align:left;}
 .hero .eyebrow{color:var(--gold);}
 .hero h1{
   font-size:clamp(2.1rem,4.4vw,3.4rem);font-weight:700;margin:18px 0 20px;
   line-height:1.12;
 }
-.hero p.sub{font-size:1.08rem;color:rgba(255,255,255,0.82);max-width:600px;margin:0 auto 34px;}
-.hero-ctas{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:30px;}
-.motto{font-family:'IBM Plex Mono';font-size:0.78rem;letter-spacing:0.1em;color:rgba(255,255,255,0.55);}
+.hero p.sub{font-size:1.08rem;color:rgba(255,255,255,0.88);max-width:560px;margin:0 0 34px;}
+.hero-ctas{display:flex;gap:14px;justify-content:flex-start;flex-wrap:wrap;margin-bottom:30px;}
+.motto{font-family:'IBM Plex Mono';font-size:0.78rem;letter-spacing:0.1em;color:rgba(255,255,255,0.6);}
+@media(max-width:640px){
+  .hero-content{text-align:left;max-width:100%;}
+  .hero-ctas{justify-content:flex-start;}
+}
 
 /* ---------- SECTION SHELL ---------- */
 section{padding:88px 0;}
@@ -201,11 +209,21 @@ section{padding:88px 0;}
 .dark .section-head p{color:rgba(255,255,255,0.7);}
 
 /* ---------- IDENTITY CARDS ---------- */
-.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;min-width:0;}
 .card{
   background:#fff;border:1px solid var(--line);border-radius:var(--radius);
-  padding:28px 24px;position:relative;overflow:hidden;
+  padding:28px 24px;position:relative;overflow:hidden;min-width:0;
+  border-top:4px solid var(--line);
 }
+.card p, .card h3{overflow-wrap:break-word;word-break:break-word;}
+.grid-4 .card:nth-child(1){border-top-color:var(--teal-deep);background:linear-gradient(180deg,rgba(11,58,69,0.05),#fff 60px);}
+.grid-4 .card:nth-child(1) .num{color:var(--teal-deep);}
+.grid-4 .card:nth-child(2){border-top-color:var(--teal);background:linear-gradient(180deg,rgba(18,121,143,0.06),#fff 60px);}
+.grid-4 .card:nth-child(2) .num{color:var(--teal);}
+.grid-4 .card:nth-child(3){border-top-color:var(--orange);background:linear-gradient(180deg,rgba(232,114,46,0.06),#fff 60px);}
+.grid-4 .card:nth-child(3) .num{color:var(--orange);}
+.grid-4 .card:nth-child(4){border-top-color:var(--gold);background:linear-gradient(180deg,rgba(243,167,48,0.08),#fff 60px);}
+.grid-4 .card:nth-child(4) .num{color:var(--gold);}
 .card .num{font-family:'IBM Plex Mono';font-size:0.72rem;color:var(--orange);letter-spacing:0.08em;}
 .card h3{font-size:1.08rem;margin:14px 0 8px;}
 .card p{color:var(--ink-soft);font-size:0.92rem;margin:0;}
@@ -215,7 +233,7 @@ section{padding:88px 0;}
 }
 
 /* ---------- MISSION AXES ---------- */
-.axes{display:grid;grid-template-columns:repeat(6,1fr);gap:16px;}
+.axes{display:grid;grid-template-columns:repeat(6,1fr);gap:16px;min-width:0;}
 .axis{
   background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.14);
   border-radius:var(--radius);padding:22px 18px;cursor:pointer;
@@ -232,7 +250,7 @@ section{padding:88px 0;}
 .axis p{font-size:0.85rem;color:rgba(255,255,255,0.68);margin:0;}
 
 /* ---------- DOMAINES TABS ---------- */
-.domaines-wrap{display:grid;grid-template-columns:260px 1fr;gap:0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff;}
+.domaines-wrap{display:grid;grid-template-columns:260px 1fr;gap:0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:#fff;min-width:0;}
 .domaine-tabs{background:var(--paper);border-right:1px solid var(--line);}
 .domaine-tab{
   display:flex;align-items:center;gap:12px;width:100%;text-align:left;
@@ -249,7 +267,7 @@ section{padding:88px 0;}
 .domaine-panel li{margin-bottom:6px;}
 
 /* ---------- IMPACT ---------- */
-.impact-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;}
+.impact-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:22px;min-width:0;}
 .impact-card{text-align:center;padding:30px 16px;}
 .ring{
   width:88px;height:88px;margin:0 auto 16px;border-radius:50%;
@@ -272,7 +290,7 @@ section{padding:88px 0;}
 .org-connector{width:1px;height:18px;background:var(--line);}
 
 /* ---------- MEMBRE / COTISATIONS ---------- */
-.two-col{display:grid;grid-template-columns:1.1fr 0.9fr;gap:48px;align-items:start;}
+.two-col{display:grid;grid-template-columns:1.1fr 0.9fr;gap:48px;align-items:start;min-width:0;}
 .cat-list{display:grid;gap:10px;margin-top:22px;}
 .cat-item{
   display:flex;justify-content:space-between;align-items:center;
@@ -301,7 +319,7 @@ table.fees tr:last-child td{border-bottom:none;}
 
 /* ---------- FOOTER ---------- */
 footer{background:var(--teal-deep);color:rgba(255,255,255,0.85);padding:60px 0 24px;}
-.footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:36px;}
+.footer-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:36px;min-width:0;}
 .footer-grid h5{color:#fff;font-family:'IBM Plex Mono';font-size:0.72rem;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:16px;}
 .footer-grid a{display:block;color:rgba(255,255,255,0.65);text-decoration:none;font-size:0.87rem;margin-bottom:10px;}
 .footer-grid a:hover{color:#fff;}
@@ -467,3 +485,46 @@ nav.links a.active::after{
 .event-card .event-date{font-family:'IBM Plex Mono';font-size:0.78rem;color:var(--orange);letter-spacing:0.04em;margin-bottom:6px;}
 .event-card h3{font-family:'Space Grotesk';font-size:1.1rem;color:var(--ink);margin-bottom:8px;}
 .event-card .event-location{font-size:0.85rem;color:var(--ink-soft);margin-bottom:8px;}
+
+/* ---------- APPROCHE & CHAÎNE DE VALEUR ---------- */
+.approche-steps{display:grid;grid-template-columns:repeat(5,1fr);gap:20px;min-width:0;margin-bottom:48px;}
+.approche-step{text-align:center;min-width:0;}
+.approche-num{
+  width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-family:'Space Grotesk';font-weight:700;font-size:1.3rem;color:#fff;margin:0 auto 14px;
+}
+.approche-step:nth-child(1) .approche-num{background:var(--orange);}
+.approche-step:nth-child(2) .approche-num{background:var(--teal);}
+.approche-step:nth-child(3) .approche-num{background:var(--teal-deep);}
+.approche-step:nth-child(4) .approche-num{background:var(--gold);}
+.approche-step:nth-child(5) .approche-num{background:var(--teal-bright);}
+.approche-step h4{font-size:0.98rem;margin-bottom:4px;}
+.approche-step p{color:var(--ink-soft);font-size:0.84rem;}
+
+.chaine-valeur{display:flex;align-items:stretch;gap:10px;flex-wrap:wrap;min-width:0;}
+.chaine-box{flex:1;min-width:140px;border-radius:var(--radius);padding:22px 18px;color:#fff;}
+.chaine-box h4{color:#fff;font-size:1rem;margin-bottom:8px;}
+.chaine-box p{color:rgba(255,255,255,0.88);font-size:0.85rem;margin:0;}
+.chaine-1{background:var(--orange);}
+.chaine-2{background:var(--gold);}
+.chaine-3{background:var(--teal);}
+.chaine-4{background:var(--teal-deep);}
+.chaine-arrow{display:flex;align-items:center;justify-content:center;color:var(--ink-soft);font-size:1.4rem;flex-shrink:0;}
+
+/* ---------- POURQUOI TRAVAILLER AVEC NOUS ---------- */
+.pourquoi-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;min-width:0;margin-bottom:28px;}
+.pourquoi-item{
+  background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:12px;
+  padding:16px 18px;font-size:0.92rem;color:#fff;min-width:0;
+}
+.pourquoi-quote{text-align:center;font-style:italic;color:var(--gold);font-size:1.1rem;margin:0;}
+
+@media(max-width:920px){
+  .approche-steps{grid-template-columns:repeat(3,1fr);}
+  .chaine-valeur{flex-direction:column;}
+  .chaine-arrow{transform:rotate(90deg);}
+  .pourquoi-grid{grid-template-columns:1fr;}
+}
+@media(max-width:560px){
+  .approche-steps{grid-template-columns:repeat(2,1fr);}
+}
