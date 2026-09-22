@@ -43,6 +43,10 @@ async function init() {
 
   document.getElementById('loginForm').addEventListener('submit', handleLogin);
   document.getElementById('logoutBtn').addEventListener('click', handleLogout);
+  document.getElementById('loginErrorClose').addEventListener('click', closeLoginErrorModal);
+  document.getElementById('loginErrorModal').addEventListener('click', (e) => {
+    if (e.target.id === 'loginErrorModal') closeLoginErrorModal();
+  });
 
   document.getElementById('adminNav').addEventListener('click', (e) => {
     const btn = e.target.closest('.admin-nav-link');
@@ -77,14 +81,80 @@ async function handleLogin(e) {
   setLoading(btn, true);
   setStatus(status, '', '');
 
-  const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
-  setLoading(btn, false);
+  try {
+    const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+    setLoading(btn, false);
 
-  if (error) {
-    setStatus(status, "Email ou mot de passe incorrect.", 'error');
-    return;
+    if (error) {
+      showLoginErrorModal(classifyLoginError(error));
+      return;
+    }
+    await loadProfileAndEnter(data.user);
+  } catch (err) {
+    setLoading(btn, false);
+    showLoginErrorModal(classifyLoginError(err));
   }
-  await loadProfileAndEnter(data.user);
+}
+
+function classifyLoginError(error) {
+  const msg = (error && error.message ? error.message : '').toLowerCase();
+
+  if (msg.includes('failed to fetch') || msg.includes('networkerror') || msg.includes('network request failed')) {
+    return {
+      title: 'Impossible de joindre le serveur',
+      reasons: [
+        'Ta connexion Internet est peut-être coupée ou instable.',
+        'Le serveur (base de données) était peut-être en veille et redémarre — cela peut prendre 1 à 2 minutes après une longue période sans utilisation.'
+      ],
+      actions: [
+        'Vérifie ta connexion Internet.',
+        'Attends une minute puis réessaie de te connecter.',
+        'Si le problème persiste après plusieurs essais, contacte la personne qui gère le site technique.'
+      ]
+    };
+  }
+  if (msg.includes('invalid login credentials')) {
+    return {
+      title: 'Email ou mot de passe incorrect',
+      reasons: [
+        'L\'email ou le mot de passe saisi ne correspond à aucun compte, ou le mot de passe est erroné.',
+        'Vérifie qu\'il n\'y a pas d\'espace avant/après l\'email, ni de majuscule involontaire (le clavier peut être en "Verr. Maj").'
+      ],
+      actions: [
+        'Retape lentement ton email et ton mot de passe.',
+        'Si tu as oublié tes identifiants, contacte un administrateur global pour les faire réinitialiser.'
+      ]
+    };
+  }
+  if (msg.includes('email not confirmed')) {
+    return {
+      title: 'Compte non confirmé',
+      reasons: ['Ce compte existe mais n\'a pas encore été confirmé.'],
+      actions: ['Contacte un administrateur global pour faire confirmer ce compte.']
+    };
+  }
+  return {
+    title: 'Connexion impossible',
+    reasons: [error && error.message ? `Détail technique : ${error.message}` : 'Une erreur inattendue est survenue.'],
+    actions: [
+      'Réessaie dans une minute.',
+      'Si le problème persiste, contacte la personne qui gère le site technique en lui transmettant ce message.'
+    ]
+  };
+}
+
+function showLoginErrorModal({ title, reasons, actions }) {
+  document.getElementById('loginErrorTitle').textContent = title;
+  document.getElementById('loginErrorReasons').innerHTML = reasons.map(r => `<li>${escapeHtml(r)}</li>`).join('');
+  document.getElementById('loginErrorActions').innerHTML = actions.map(a => `<li>${escapeHtml(a)}</li>`).join('');
+  const modal = document.getElementById('loginErrorModal');
+  modal.classList.add('open');
+  modal.setAttribute('aria-hidden', 'false');
+}
+function closeLoginErrorModal() {
+  const modal = document.getElementById('loginErrorModal');
+  modal.classList.remove('open');
+  modal.setAttribute('aria-hidden', 'true');
 }
 
 async function handleLogout() {
