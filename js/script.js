@@ -348,3 +348,15 @@ function downloadIcs(ev) {
 }
 
 document.addEventListener('DOMContentLoaded', loadPublicEvents);
+
+// ---------- Cartes interactives "Notre identité" — support tactile ----------
+document.addEventListener('DOMContentLoaded', () => {
+  const cards = document.querySelectorAll('.grid-4 .card');
+  cards.forEach((card) => {
+    card.addEventListener('click', () => {
+      const wasActive = card.classList.contains('is-active');
+      cards.forEach((c) => c.classList.remove('is-active'));
+      if (!wasActive) card.classList.add('is-active');
+    });
+  });
+});
