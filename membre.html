@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Accueil — Association Génération Positive</title>
-<meta name="description" content="Association Génération Positive à Yaoundé : santé communautaire, environnement, entrepreneuriat, inclusion numérique et accompagnement des jeunes, femmes et personnes vulnérables au Cameroun.">
+<title>Devenir membre — Association Génération Positive</title>
+<meta name="description" content="Rejoignez Génération Positive : catégories de membres, cotisations et formulaire d'adhésion en ligne.">
 <meta name="robots" content="index, follow">
-<link rel="canonical" href="https://www.generationpositive.org/index.html">
+<link rel="canonical" href="https://www.generationpositive.org/membre.html">
 <meta name="theme-color" content="#0B3A45">
 
 <link rel="icon" type="image/x-icon" href="images/favicon/favicon.ico">
@@ -18,10 +18,10 @@
 
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Association Génération Positive">
-<meta property="og:title" content="Accueil — Association Génération Positive">
-<meta property="og:description" content="Association Génération Positive à Yaoundé : santé communautaire, environnement, entrepreneuriat, inclusion numérique et accompagnement des jeunes, femmes et personnes vulnérables au Cameroun.">
+<meta property="og:title" content="Devenir membre — Association Génération Positive">
+<meta property="og:description" content="Rejoignez Génération Positive : catégories de membres, cotisations et formulaire d'adhésion en ligne.">
 <meta property="og:image" content="https://www.generationpositive.org/images/logo.jpg">
-<meta property="og:url" content="https://www.generationpositive.org/index.html">
+<meta property="og:url" content="https://www.generationpositive.org/membre.html">
 <meta property="og:locale" content="fr_FR">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -52,7 +52,7 @@
       <a href="gouvernance.html">Gouvernance</a>
       <a href="transparence.html">Transparence</a>
       <a href="galerie.html">Galerie</a>
-      <a href="membre.html" class="btn btn-ghost">Devenir membre</a>
+      <a href="membre.html" class="active btn btn-ghost">Devenir membre</a>
       <a href="don.html" class="btn btn-primary">Faire un don</a>
     </nav>
     </nav>
@@ -61,58 +61,62 @@
 </header>
 
 <main>
-<section class="hero">
-  <div class="arc-bg">
-    <div class="arc" style="width:620px;height:620px;top:-260px;left:-160px;"></div>
-    <div class="arc arc-orange" style="width:420px;height:420px;bottom:-220px;right:-100px;"></div>
-    <div class="arc arc-gold" style="width:260px;height:260px;top:40%;right:8%;"></div>
-  </div>
-  <div class="hero-inner">
-    <div class="hero-content">
-      <div class="eyebrow">Association Génération Positive · Yaoundé, Cameroun</div>
-      <h1>Construire ensemble une génération autonome, responsable et innovante.</h1>
-      <p class="sub">Agir pour les communautés, renforcer les capacités et contribuer à un développement durable et inclusif, à travers la santé communautaire, l'environnement, l'entrepreneuriat et l'inclusion numérique.</p>
-      <div class="hero-ctas">
-        <a href="identite.html" class="btn btn-primary">Découvrir l'association</a>
-        <a href="don.html" class="btn btn-ghost">Soutenir notre action</a>
-        <a href="membre.html" class="btn btn-ghost">Devenir membre</a>
+<section id="membre">
+  <div class="container">
+    <div class="section-head">
+      <div class="eyebrow">Rejoignez-nous</div>
+      <h2>Devenir membre de Génération Positive</h2>
+    </div>
+    <div class="two-col">
+      <div>
+        <div class="cat-list">
+          <div class="cat-item"><span>Membres fondateurs</span><span class="eyebrow" style="color:var(--teal)">Catégorie</span></div>
+          <div class="cat-item"><span>Membres actifs</span><span class="eyebrow" style="color:var(--teal)">Catégorie</span></div>
+          <div class="cat-item"><span>Membres d'honneur</span><span class="eyebrow" style="color:var(--teal)">Catégorie</span></div>
+          <div class="cat-item"><span>Membres partenaires</span><span class="eyebrow" style="color:var(--teal)">Catégorie</span></div>
+        </div>
+        <div style="margin-top:28px;">
+          <table class="fees">
+            <tr><th>Contribution</th><th>Montant</th></tr>
+            <tr><td>Inscription initiale</td><td>1 000 FCFA</td></tr>
+            <tr><td>Réinscription annuelle</td><td>1 000 FCFA</td></tr>
+            <tr><td>Adhésion annuelle</td><td>2 500 FCFA</td></tr>
+            <tr><td>Contribution mensuelle</td><td>2 000 FCFA</td></tr>
+          </table>
+        </div>
       </div>
-      <div class="motto">IN HARD WORK WE TRUST</div>
+      <div class="form-card">
+        <h3 style="margin-bottom:18px;">Formulaire d'adhésion</h3>
+        <form id="membershipForm" novalidate>
+          <div class="form-row">
+            <div><label for="mNom">Nom</label><input id="mNom" name="nom" required></div>
+            <div><label for="mPrenom">Prénom</label><input id="mPrenom" name="prenom" required></div>
+          </div>
+          <div class="form-row">
+            <div><label for="mTel">Téléphone</label><input id="mTel" name="telephone" type="tel" required></div>
+            <div><label for="mEmail">Email</label><input id="mEmail" name="email" type="email" required></div>
+          </div>
+          <div class="form-row">
+            <div><label for="mVille">Ville</label><input id="mVille" name="ville"></div>
+            <div><label for="mProfession">Profession</label><input id="mProfession" name="profession"></div>
+          </div>
+          <div class="form-row full">
+            <div><label for="mCategorie">Catégorie de membre souhaitée</label>
+              <select id="mCategorie" name="categorie"><option>Membre actif</option><option>Membre fondateur</option><option>Membre d'honneur</option><option>Membre partenaire</option></select>
+            </div>
+          </div>
+          <div class="form-row full">
+            <div><label for="mMotivation">Motivation</label><textarea id="mMotivation" name="motivation" rows="3"></textarea></div>
+          </div>
+          <div class="consent"><input id="mStatuts" type="checkbox" required><label for="mStatuts">J'accepte les Statuts de l'association</label></div>
+          <div class="consent"><input id="mReglement" type="checkbox" required><label for="mReglement">J'accepte le Règlement Intérieur</label></div>
+          <button class="btn btn-primary" type="submit" id="membershipSubmit"><span class="spinner"></span><span class="btn-label">Envoyer ma demande d'adhésion</span></button>
+          <div class="form-status" id="membershipStatus" role="status" aria-live="polite"></div>
+          <div class="form-note">Votre demande sera examinée conformément aux procédures internes de l'association.</div>
+        </form>
+      </div>
     </div>
   </div>
-</section>
-
-<section class="slideshow" aria-label="Diaporama de nos actions sur le terrain">
-  <div class="slideshow-track" id="slideshowTrack">
-    <div class="slide active">
-      <img src="images/gallery/g08.jpg" alt="Accompagnement d'une bénéficiaire — journée de santé" width="560" height="746" loading="eager">
-      <div class="slide-caption"><span class="eyebrow" style="color:var(--gold)">Sur le terrain</span><h3>Accompagnement de proximité auprès des aînés</h3></div>
-    </div>
-    <div class="slide">
-      <img src="images/gallery/g15.jpg" alt="Autonomisation des femmes" width="560" height="420" loading="lazy">
-      <div class="slide-caption"><span class="eyebrow" style="color:var(--gold)">Jeunes &amp; femmes</span><h3>Autonomisation des femmes</h3></div>
-    </div>
-    <div class="slide">
-      <img src="images/gallery/g10.jpg" alt="Consultation et suivi médical d'une bénéficiaire" width="560" height="746" loading="lazy">
-      <div class="slide-caption"><span class="eyebrow" style="color:var(--gold)">Santé communautaire</span><h3>Consultation et suivi médical</h3></div>
-    </div>
-    <div class="slide">
-      <img src="images/gallery/g09.jpg" alt="Consultation médicale de proximité" width="560" height="746" loading="lazy">
-      <div class="slide-caption"><span class="eyebrow" style="color:var(--gold)">Santé communautaire</span><h3>Consultation médicale de proximité</h3></div>
-    </div>
-    <div class="slide">
-      <img src="images/gallery/g06.jpg" alt="Moment d’échange avec les aînés" width="560" height="746" loading="lazy">
-      <div class="slide-caption"><span class="eyebrow" style="color:var(--gold)">Personnes vulnérables</span><h3>Moment d'échange avec les aînés</h3></div>
-    </div>
-    <div class="slide">
-      <img src="images/gallery/g13.jpg" alt="Enregistrement d’une bénéficiaire sur le terrain" width="560" height="746" loading="lazy">
-      <div class="slide-caption"><span class="eyebrow" style="color:var(--gold)">Campagne</span><h3>Enregistrement et suivi des bénéficiaires</h3></div>
-    </div>
-  </div>
-  <button class="slide-nav slide-prev" id="slidePrev" aria-label="Photo précédente">&#8249;</button>
-  <button class="slide-nav slide-next" id="slideNext" aria-label="Photo suivante">&#8250;</button>
-  <button class="slide-toggle" id="slideToggle" aria-label="Mettre le diaporama en pause">&#10073;&#10073;</button>
-  <div class="slide-dots" id="slideDots" role="tablist" aria-label="Choisir une photo"></div>
 </section>
 </main>
 
