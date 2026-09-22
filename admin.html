@@ -42,6 +42,18 @@
   </div>
 </div>
 
+<!-- ---------- LOGIN ERROR MODAL ---------- -->
+<div class="lightbox" id="loginErrorModal" role="dialog" aria-modal="true" aria-label="Erreur de connexion" aria-hidden="true">
+  <button class="lightbox-close" id="loginErrorClose" aria-label="Fermer">&times;</button>
+  <div style="background:#fff;border-radius:16px;padding:32px 28px;max-width:440px;width:90%;text-align:left;">
+    <h3 id="loginErrorTitle" style="margin-bottom:14px;color:#C0392B;">Connexion impossible</h3>
+    <p style="font-size:0.85rem;font-weight:600;color:var(--ink);margin-bottom:6px;">Causes possibles :</p>
+    <ul id="loginErrorReasons" style="font-size:0.88rem;color:var(--ink-soft);margin:0 0 16px;padding-left:20px;line-height:1.6;"></ul>
+    <p style="font-size:0.85rem;font-weight:600;color:var(--ink);margin-bottom:6px;">Que faire :</p>
+    <ul id="loginErrorActions" style="font-size:0.88rem;color:var(--ink);margin:0;padding-left:20px;line-height:1.6;"></ul>
+  </div>
+</div>
+
 <!-- ---------- DASHBOARD SHELL (hidden until authenticated) ---------- -->
 <div id="dashboard" class="dashboard" hidden>
   <aside class="admin-sidebar">
@@ -149,6 +161,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="js/supabase-config.js"></script>
-<script src="js/admin.js?v=20260922a"></script>
+<script src="js/admin.js?v=20260922b"></script>
 </body>
 </html>
