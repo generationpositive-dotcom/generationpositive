@@ -114,58 +114,45 @@ const revealObserver = new IntersectionObserver((entries)=>{
 },{threshold:0.15});
 revealTargets.forEach(el=>revealObserver.observe(el));
 
-/* Active nav link tied to visible section */
-const sections = document.querySelectorAll('section[id]');
-const navLinks = document.querySelectorAll('nav.links a[href^="#"]');
-const navObserver = new IntersectionObserver((entries)=>{
-  entries.forEach(entry=>{
-    const link = document.querySelector('nav.links a[href="#'+entry.target.id+'"]');
-    if(!link) return;
-    if(entry.isIntersecting){
-      navLinks.forEach(l=>l.classList.remove('active'));
-      link.classList.add('active');
-    }
-  });
-},{rootMargin:'-45% 0px -45% 0px'});
-sections.forEach(s=>navObserver.observe(s));
-
 /* Gallery lightbox */
-const galleryItems = Array.from(document.querySelectorAll('.gallery-item'));
 const lightbox = document.getElementById('lightbox');
-const lightboxImg = document.getElementById('lightboxImg');
-const lightboxCap = document.getElementById('lightboxCap');
-let currentIdx = 0;
+if(lightbox){
+  const galleryItems = Array.from(document.querySelectorAll('.gallery-item'));
+  const lightboxImg = document.getElementById('lightboxImg');
+  const lightboxCap = document.getElementById('lightboxCap');
+  let currentIdx = 0;
 
-function openLightbox(idx){
-  currentIdx = idx;
-  const item = galleryItems[currentIdx];
-  lightboxImg.src = item.querySelector('img').src;
-  lightboxCap.textContent = item.querySelector('img').alt;
-  lightbox.classList.add('open');
-  lightbox.setAttribute('aria-hidden', 'false');
-  document.getElementById('lightboxClose').focus();
+  const openLightbox = (idx) => {
+    currentIdx = idx;
+    const item = galleryItems[currentIdx];
+    lightboxImg.src = item.querySelector('img').src;
+    lightboxCap.textContent = item.querySelector('img').alt;
+    lightbox.classList.add('open');
+    lightbox.setAttribute('aria-hidden', 'false');
+    document.getElementById('lightboxClose').focus();
+  };
+  const closeLightbox = () => {
+    lightbox.classList.remove('open');
+    lightbox.setAttribute('aria-hidden', 'true');
+  };
+  const showDelta = (delta) => {
+    currentIdx = (currentIdx + delta + galleryItems.length) % galleryItems.length;
+    const item = galleryItems[currentIdx];
+    lightboxImg.src = item.querySelector('img').src;
+    lightboxCap.textContent = item.querySelector('img').alt;
+  };
+  galleryItems.forEach((item,i)=> item.addEventListener('click', ()=>openLightbox(i)));
+  document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+  document.getElementById('lightboxPrev').addEventListener('click', ()=>showDelta(-1));
+  document.getElementById('lightboxNext').addEventListener('click', ()=>showDelta(1));
+  lightbox.addEventListener('click', (e)=>{ if(e.target === lightbox) closeLightbox(); });
+  document.addEventListener('keydown', (e)=>{
+    if(!lightbox.classList.contains('open')) return;
+    if(e.key === 'Escape') closeLightbox();
+    if(e.key === 'ArrowRight') showDelta(1);
+    if(e.key === 'ArrowLeft') showDelta(-1);
+  });
 }
-function closeLightbox(){
-  lightbox.classList.remove('open');
-  lightbox.setAttribute('aria-hidden', 'true');
-}
-function showDelta(delta){
-  currentIdx = (currentIdx + delta + galleryItems.length) % galleryItems.length;
-  const item = galleryItems[currentIdx];
-  lightboxImg.src = item.querySelector('img').src;
-  lightboxCap.textContent = item.querySelector('img').alt;
-}
-galleryItems.forEach((item,i)=> item.addEventListener('click', ()=>openLightbox(i)));
-document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
-document.getElementById('lightboxPrev').addEventListener('click', ()=>showDelta(-1));
-document.getElementById('lightboxNext').addEventListener('click', ()=>showDelta(1));
-lightbox.addEventListener('click', (e)=>{ if(e.target === lightbox) closeLightbox(); });
-document.addEventListener('keydown', (e)=>{
-  if(!lightbox.classList.contains('open')) return;
-  if(e.key === 'Escape') closeLightbox();
-  if(e.key === 'ArrowRight') showDelta(1);
-  if(e.key === 'ArrowLeft') showDelta(-1);
-});
 const hamburgerBtn = document.querySelector('.hamburger');
 const siteNav = document.getElementById('siteNav');
 hamburgerBtn.addEventListener('click', ()=>{
